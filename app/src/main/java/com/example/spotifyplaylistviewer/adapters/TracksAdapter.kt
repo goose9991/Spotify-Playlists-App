@@ -1,4 +1,4 @@
-package com.example.spotifyplaylistviewer
+package com.example.spotifyplaylistviewer.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +7,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.spotifyplaylistviewer.R
+import com.example.spotifyplaylistviewer.model.TrackItem
 
 class TrackAdapter : RecyclerView.Adapter<TrackAdapter.TrackViewHolder>() {
 

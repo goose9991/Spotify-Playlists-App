@@ -1,5 +1,6 @@
-package com.example.spotifyplaylistviewer
+package com.example.spotifyplaylistviewer.adapters
 
+import android.R
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,7 +22,7 @@ class PlaylistAdapter(
     }
 
     inner class PlaylistViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val textView: TextView = itemView.findViewById(android.R.id.text1)
+        val textView: TextView = itemView.findViewById(R.id.text1)
 
         fun bind(playlistItem: PlaylistItem) {
             textView.text = playlistItem.name
@@ -33,7 +34,7 @@ class PlaylistAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(android.R.layout.simple_list_item_1, parent, false)
+            .inflate(R.layout.simple_list_item_1, parent, false)
         return PlaylistViewHolder(view)
     }
 

@@ -1,4 +1,4 @@
-package com.example.spotifyplaylistviewer
+package com.example.spotifyplaylistviewer.model
 
 data class TrackItem(
     val title: String,

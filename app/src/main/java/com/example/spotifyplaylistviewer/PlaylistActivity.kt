@@ -6,6 +6,8 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.spotifyplaylistviewer.adapters.PlaylistAdapter
+import com.example.spotifyplaylistviewer.adapters.PlaylistItem
 import okhttp3.*
 import org.json.JSONObject
 import java.io.IOException
