@@ -69,21 +69,19 @@ class TracksActivity : AppCompatActivity() {
                         val items = json.optJSONArray("items") ?: return
 
                         for (i in 0 until items.length()) {
-                            val trackObj = items.getJSONObject(i).getJSONObject("track")
+                            val item = items.getJSONObject(i)
+                            if (item.isNull("track")) {
+                                Log.w("TRACKS", "Skipping null track at position $i")
+                                continue
+                            }
+                            val trackObj = item.getJSONObject("track")
                             val name = trackObj.getString("name")
                             val artist = trackObj.getJSONArray("artists")
                                 .getJSONObject(0).getString("name")
-
-                            // Get album image url (smallest image)
                             val albumImages = trackObj.getJSONObject("album").getJSONArray("images")
-                            val imageUrl = if (albumImages.length() > 0) {
-                                // Usually the last image is smallest; pick first or last accordingly
-                                albumImages.getJSONObject(albumImages.length() - 1).getString("url")
-                            } else {
-                                ""  // fallback no image
-                            }
+                            val albumImageUrl = if (albumImages.length() > 0) albumImages.getJSONObject(0).getString("url") else ""
 
-                            allTracks.add(TrackItem(name, artist, imageUrl))
+                            allTracks.add(TrackItem(name, artist, albumImageUrl))
                         }
 
                         val nextUrl = json.optString("next")
