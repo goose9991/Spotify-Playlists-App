@@ -47,7 +47,7 @@ class TracksActivity : AppCompatActivity() {
         Log.d("TRACKS", "Fetching tracks for playlist: $playlistId")
 
         val client = OkHttpClient()
-        val allTracks = mutableListOf<String>()
+        val allTracks = mutableListOf<TrackItem>()
 
         fun fetchPage(url: String) {
             val request = Request.Builder()
@@ -73,7 +73,17 @@ class TracksActivity : AppCompatActivity() {
                             val name = trackObj.getString("name")
                             val artist = trackObj.getJSONArray("artists")
                                 .getJSONObject(0).getString("name")
-                            allTracks.add("$name - $artist")
+
+                            // Get album image url (smallest image)
+                            val albumImages = trackObj.getJSONObject("album").getJSONArray("images")
+                            val imageUrl = if (albumImages.length() > 0) {
+                                // Usually the last image is smallest; pick first or last accordingly
+                                albumImages.getJSONObject(albumImages.length() - 1).getString("url")
+                            } else {
+                                ""  // fallback no image
+                            }
+
+                            allTracks.add(TrackItem(name, artist, imageUrl))
                         }
 
                         val nextUrl = json.optString("next")

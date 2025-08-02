@@ -3,31 +3,39 @@ package com.example.spotifyplaylistviewer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 
 class TrackAdapter : RecyclerView.Adapter<TrackAdapter.TrackViewHolder>() {
 
-    private val tracks = mutableListOf<String>()
+    private val tracks = mutableListOf<TrackItem>()
 
-    fun submitList(newList: List<String>) {
+    fun submitList(newList: List<TrackItem>) {
         tracks.clear()
         tracks.addAll(newList)
         notifyDataSetChanged()
     }
 
     class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val textView: TextView = itemView.findViewById(android.R.id.text1)
+        val trackInfo: TextView = itemView.findViewById(R.id.trackInfo)
+        val albumImage: ImageView = itemView.findViewById(R.id.albumImage)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(android.R.layout.simple_list_item_1, parent, false)
+            .inflate(R.layout.track_item, parent, false)
         return TrackViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
-        holder.textView.text = tracks[position]
+        val track = tracks[position]
+        holder.trackInfo.text = "${track.title} - ${track.artist}"
+
+        Glide.with(holder.albumImage.context)
+            .load(track.albumImageUrl)
+            .into(holder.albumImage)
     }
 
     override fun getItemCount(): Int = tracks.size
