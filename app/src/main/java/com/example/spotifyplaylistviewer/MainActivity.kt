@@ -16,7 +16,7 @@ import java.security.MessageDigest
 class MainActivity : AppCompatActivity() {
 
     private lateinit var loginButton: Button
-    private val clientId = "CLIENT_ID"
+    private val clientId = "37bca93e2cb444fd819f75ef6f7e50c3"
     private val redirectUri = "thisapp://callback"
     private lateinit var codeVerifier: String
 

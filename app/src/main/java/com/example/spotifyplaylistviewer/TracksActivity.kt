@@ -47,39 +47,51 @@ class TracksActivity : AppCompatActivity() {
         Log.d("TRACKS", "Fetching tracks for playlist: $playlistId")
 
         val client = OkHttpClient()
-        val request = Request.Builder()
-            .url("https://api.spotify.com/v1/playlists/$playlistId/tracks")
-            .addHeader("Authorization", "Bearer $accessToken")
-            .build()
+        val allTracks = mutableListOf<String>()
 
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                Log.e("TRACKS", "Failed: ${e.message}")
-            }
+        fun fetchPage(url: String) {
+            val request = Request.Builder()
+                .url(url)
+                .addHeader("Authorization", "Bearer $accessToken")
+                .build()
 
-            override fun onResponse(call: Call, response: Response) {
-                val body = response.body?.string()
-                Log.d("TRACKS", "Response: $body")
-
-                try {
-                    val items = JSONObject(body ?: "").optJSONArray("items") ?: return
-                    val tracks = mutableListOf<String>()
-
-                    for (i in 0 until items.length()) {
-                        val trackObj = items.getJSONObject(i).getJSONObject("track")
-                        val name = trackObj.getString("name")
-                        val artist = trackObj.getJSONArray("artists")
-                            .getJSONObject(0).getString("name")
-                        tracks.add("$name - $artist")
-                    }
-
-                    runOnUiThread {
-                        adapter.submitList(tracks)
-                    }
-                } catch (e: Exception) {
-                    Log.e("TRACKS", "JSON parse error: ${e.message}")
+            client.newCall(request).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    Log.e("TRACKS", "Failed: ${e.message}")
                 }
-            }
-        })
+
+                override fun onResponse(call: Call, response: Response) {
+                    val body = response.body?.string()
+                    Log.d("TRACKS", "Response: $body")
+
+                    try {
+                        val json = JSONObject(body ?: "")
+                        val items = json.optJSONArray("items") ?: return
+
+                        for (i in 0 until items.length()) {
+                            val trackObj = items.getJSONObject(i).getJSONObject("track")
+                            val name = trackObj.getString("name")
+                            val artist = trackObj.getJSONArray("artists")
+                                .getJSONObject(0).getString("name")
+                            allTracks.add("$name - $artist")
+                        }
+
+                        val nextUrl = json.optString("next")
+                        if (!nextUrl.isNullOrEmpty() && nextUrl != "null") {
+                            fetchPage(nextUrl)
+                        } else {
+                            runOnUiThread {
+                                adapter.submitList(allTracks)
+                            }
+                        }
+                    } catch (e: Exception) {
+                        Log.e("TRACKS", "JSON parse error: ${e.message}")
+                    }
+                }
+            })
+        }
+
+        val initialUrl = "https://api.spotify.com/v1/playlists/$playlistId/tracks"
+        fetchPage(initialUrl)
     }
 }
