@@ -53,7 +53,7 @@ class PlaylistActivity : AppCompatActivity() {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (query != null) {
                     Log.d("SEARCH", "Query submitted: $query")
-                    // TODO: Implement search functionality
+                    fetchPlaylistsFromSearch(accessToken, query)
                 }
                 return true
             }
@@ -86,10 +86,10 @@ class PlaylistActivity : AppCompatActivity() {
 
         playlistRecycler.adapter = adapter
 
-        fetchPlaylists(accessToken)
+        fetchUserPlaylists(accessToken)
     }
 
-    private fun fetchPlaylists(accessToken: String) {
+    private fun fetchUserPlaylists(accessToken: String) {
         Log.d("PLAYLIST", "Fetching playlists with token")
 
         val client = OkHttpClient()
@@ -116,6 +116,55 @@ class PlaylistActivity : AppCompatActivity() {
 
                     val playlists = mutableListOf<PlaylistItem>()
                     for (i in 0 until items.length()) {
+                        val obj = items.getJSONObject(i)
+                        val name = obj.getString("name")
+                        val id = obj.getString("id")
+                        playlists.add(PlaylistItem(id, name))
+                    }
+
+                    runOnUiThread {
+                        adapter.submitList(playlists)
+                    }
+                } catch (e: Exception) {
+                    Log.e("PLAYLIST", "Failed to parse JSON: ${e.message}")
+                }
+            }
+        })
+    }
+
+    private fun fetchPlaylistsFromSearch(accessToken: String, query: String) {
+        val client = OkHttpClient()
+        val request = Request.Builder()
+            .url("https://api.spotify.com/v1/search?q=$query&type=playlist")
+            .addHeader("Authorization", "Bearer $accessToken")
+            .build()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                Log.e("PLAYLIST", "Fetch failed: ${e.message}")
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                val responseBody = response.body?.string()
+                Log.d("PLAYLIST", "Response: $responseBody")
+
+                try {
+                    val json = JSONObject(responseBody ?: "")
+                    val items = json.optJSONObject("playlists")?.optJSONArray("items") ?: run {
+                        Log.e("PLAYLIST", "No playlists found")
+                        return
+                    }
+
+                    val playlists = mutableListOf<PlaylistItem>()
+                    for (i in 0 until items.length()) {
+                        Log.d("PLAYLIST", "Processing playlist $i")
+                        Log.d("PLAYLIST", "JSON: ${items[i]}")
+
+                        if (items[i].toString() == "null") {
+                            Log.e("PLAYLIST", "Null playlist found")
+                            continue
+                        }
+
                         val obj = items.getJSONObject(i)
                         val name = obj.getString("name")
                         val id = obj.getString("id")
