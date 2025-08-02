@@ -1,0 +1,16 @@
+
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <!-- Transparent fill -->
+    <solid android:color="@android:color/transparent" />
+
+    <!-- Rounded border -->
+    <stroke
+        android:width="2dp"
+        android:color="@color/spotifyGreen" />  <!-- Use any border color you want -->
+
+    <!-- Rounded corners -->
+    <corners android:radius="12dp" />
+
+</shape>

@@ -17,21 +17,15 @@
         >
 
 
-        <ImageView
-            android:id="@+id/albumImage"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:scaleType="centerCrop"
-
-            android:contentDescription="Album art" />
-
         <TextView
-            android:id="@+id/trackInfo"
+            android:id="@+id/playListInfo"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginStart="12dp"
-            android:text="Track - Artist"
+            android:text="Playlist 1"
+            android:fontFamily="@font/bold"
+            android:textColor="@color/spotifyWhite"
             android:textSize="16sp" />
     </LinearLayout>
 

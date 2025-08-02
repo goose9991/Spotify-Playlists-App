@@ -1,9 +1,29 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.Spotifyplaylistviewer" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+
+        <item name="colorPrimary">@color/spotifyGreen</item>
+        <item name="colorPrimaryVariant">@color/spotifyGreen</item>
+        <item name="colorOnPrimary">@color/spotifyWhite</item>
+
+        <item name="android:windowBackground">@color/spotifyBlack</item>
+        <item name="backgroundColor">@color/spotifyBlack</item>
+        <item name="colorOnBackground">@color/spotifyWhite</item>
+
+        <item name="colorSecondary">@color/spotifyGray</item>
+        <item name="colorOnSecondary">@color/spotifyWhite</item>
+
+        <item name="android:statusBarColor">@color/spotifyBlack</item>
+        <item name="android:navigationBarColor">@color/spotifyBlack</item>
+        <item name="colorSurface">@color/spotifyBlack</item>
+        <item name="colorSurfaceVariant">@color/spotifyBlack</item>
+
+
     </style>
 
-    <style name="Theme.Spotifyplaylistviewer" parent="Base.Theme.Spotifyplaylistviewer" />
+    <style name="Theme.Spotifyplaylistviewer" parent = "Base.Theme.Spotifyplaylistviewer"/>
+
+
+
+
 </resources>

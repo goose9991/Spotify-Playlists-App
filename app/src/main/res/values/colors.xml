@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="spotifyBlack">#FF000000</color>
+    <color name="spotifyWhite">#FFFFFFFF</color>
+    <color name="spotifyGreen">#1DB954</color>
+    <color name="spotifyGray">#191414</color>
+
+
+<!--Font Family-->
+    <item name="fontFamily" type="font">@font/montserrat</item>
 </resources>
