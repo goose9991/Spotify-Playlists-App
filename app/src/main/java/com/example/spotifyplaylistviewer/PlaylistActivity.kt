@@ -4,6 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
+import androidx.appcompat.widget.Toolbar
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.spotifyplaylistviewer.adapters.PlaylistAdapter
@@ -15,6 +20,8 @@ import java.io.IOException
 class PlaylistActivity : AppCompatActivity() {
 
     private lateinit var playlistRecycler: RecyclerView
+    private lateinit var toolbar: Toolbar
+    private lateinit var searchView: SearchView
     private lateinit var adapter: PlaylistAdapter
     private lateinit var accessToken: String
 
@@ -24,6 +31,42 @@ class PlaylistActivity : AppCompatActivity() {
         setContentView(R.layout.activity_playlist)
 
         playlistRecycler = findViewById(R.id.playlistRecycler)
+        toolbar = findViewById(R.id.toolbar)
+        searchView = findViewById(R.id.search_view)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+
+        setSupportActionBar(toolbar) // Set the Toolbar as the ActionBar
+
+        // Apply insets to the Toolbar to push it down below the status bar
+        ViewCompat.setOnApplyWindowInsetsListener(toolbar) { view, windowInsets ->
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            // Apply top padding to the Toolbar to account for the status bar height
+            view.updatePadding(top = insets.top)
+            // You might also want to apply left and right insets if needed for cutouts, etc.
+            // view.updatePadding(left = insets.left, right = insets.right)
+
+            // Return CONSUMED if you've handled the insets
+            WindowInsetsCompat.CONSUMED
+        }
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                if (query != null) {
+                    Log.d("SEARCH", "Query submitted: $query")
+                    // TODO: Implement search functionality
+                }
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText != null) {
+                    Log.d("SEARCH", "Query changed: $newText")
+                }
+                return true
+            }
+        })
+
+
         playlistRecycler.layoutManager = LinearLayoutManager(this)
 
         accessToken = intent.getStringExtra("ACCESS_TOKEN") ?: run {
