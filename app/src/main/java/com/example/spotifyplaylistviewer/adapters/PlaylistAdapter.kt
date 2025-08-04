@@ -6,12 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.spotifyplaylistviewer.model.PlaylistItem
 
-data class PlaylistItem(val id: String, val name: String)
 
 class PlaylistAdapter(
-    private val onItemClick: (PlaylistItem) -> Unit
-) : RecyclerView.Adapter<PlaylistAdapter.PlaylistViewHolder>() {
+    private val onItemClick: (PlaylistItem) -> Unit)
+    :
+    RecyclerView.Adapter<PlaylistAdapter.PlaylistViewHolder>() {
 
     private val playlists = mutableListOf<PlaylistItem>()
 

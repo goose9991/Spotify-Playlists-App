@@ -11,7 +11,7 @@ import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.spotifyplaylistviewer.adapters.PlaylistAdapter
-import com.example.spotifyplaylistviewer.adapters.PlaylistItem
+import com.example.spotifyplaylistviewer.model.PlaylistItem
 import okhttp3.*
 import org.json.JSONObject
 import java.io.IOException
