@@ -1,7 +1,9 @@
 package com.example.spotifyplaylistviewer
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,6 +21,7 @@ class TracksActivity : AppCompatActivity() {
     private lateinit var accessToken: String
     private lateinit var playlistId: String
     private lateinit var playlistName: String
+    private lateinit var exploreBtn: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,8 +29,17 @@ class TracksActivity : AppCompatActivity() {
         setContentView(R.layout.activity_tracks)
 
         accessToken = intent.getStringExtra("ACCESS_TOKEN") ?: ""
-        playlistId = intent.getStringExtra("PLAYLIST_ID") ?: ""
+        playlistId = intent.getStringExtra("USER_PLAYLIST_ID") ?: ""
         playlistName = intent.getStringExtra("PLAYLIST_NAME") ?: ""
+
+        exploreBtn = findViewById<Button>(R.id.exploreSongsButton);
+
+        exploreBtn.setOnClickListener {
+            val searchIntent = Intent(this, SearchPlaylistActivity::class.java)
+            searchIntent.putExtra("ACCESS_TOKEN", accessToken)
+            searchIntent.putExtra("USER_PLAYLIST_ID", playlistId)
+            startActivity(searchIntent)
+        }
 
         if (accessToken.isBlank() || playlistId.isBlank()) {
             Log.e("TRACKS", "Missing data, closing activity")
@@ -37,10 +49,16 @@ class TracksActivity : AppCompatActivity() {
 
         title = playlistName
 
-        trackRecycler = findViewById(R.id.trackRecycler)
+        trackRecycler = findViewById(R.id.otherTrackRecycler)
         trackRecycler.layoutManager = LinearLayoutManager(this)
         adapter = TrackAdapter()
         trackRecycler.adapter = adapter
+
+        fetchTracks()
+    }
+
+    override fun onResume() {
+        super.onResume()
 
         fetchTracks()
     }
@@ -82,8 +100,8 @@ class TracksActivity : AppCompatActivity() {
                                 .getJSONObject(0).getString("name")
                             val albumImages = trackObj.getJSONObject("album").getJSONArray("images")
                             val albumImageUrl = if (albumImages.length() > 0) albumImages.getJSONObject(0).getString("url") else ""
-
-                            allTracks.add(TrackItem(name, artist, albumImageUrl))
+                            val songUrl = trackObj.getString("uri")
+                            allTracks.add(TrackItem(name, artist, albumImageUrl, songUrl))
                         }
 
                         val nextUrl = json.optString("next")

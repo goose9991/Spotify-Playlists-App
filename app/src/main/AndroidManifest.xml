@@ -29,6 +29,9 @@
         </activity>
         <activity android:name=".PlaylistActivity" />
         <activity android:name=".TracksActivity" />
+        <activity android:name=".SearchPlaylistActivity"/>
+        <activity android:name=".OtherTracksActivity"/>
+
     </application>
 
 </manifest>

@@ -16,7 +16,7 @@ import java.security.MessageDigest
 class MainActivity : AppCompatActivity() {
 
     private lateinit var loginButton: Button
-    private val clientId = "CLIENT_ID"
+    private val clientId = "0e2e955a9605472682be7523d56cf47e"
     private val redirectUri = "thisapp://callback"
     private lateinit var codeVerifier: String
 
@@ -72,7 +72,8 @@ class MainActivity : AppCompatActivity() {
             .appendQueryParameter("redirect_uri", redirectUri)
             .appendQueryParameter("code_challenge_method", "S256")
             .appendQueryParameter("code_challenge", codeChallenge)
-            .appendQueryParameter("scope", "playlist-read-private")
+            .appendQueryParameter("scope", "playlist-read-private playlist-modify-private")
+
             .build()
 
         Log.d("AUTH", "Launching Spotify login with URI: $uri")
@@ -125,7 +126,7 @@ class MainActivity : AppCompatActivity() {
                             val intent = Intent(this@MainActivity, PlaylistActivity::class.java)
                             intent.putExtra("ACCESS_TOKEN", accessToken)
                             startActivity(intent)
-                            finish() // close login screen
+                            finish()
                         }
                     } else {
                         Log.e("TOKEN", "No access_token found in response")
