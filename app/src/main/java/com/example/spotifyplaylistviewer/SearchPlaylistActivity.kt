@@ -1,8 +1,11 @@
 package com.example.spotifyplaylistviewer
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
+import android.view.ViewGroup
+import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.ViewCompat
@@ -31,6 +34,10 @@ class SearchPlaylistActivity : AppCompatActivity() {
 
         playlistRecycler = findViewById(R.id.otherPlaylistRecycler)
         searchView = findViewById(R.id.search_view)
+
+        val searchEditText = findSearchAutoComplete(searchView)
+        searchEditText?.setTextColor(Color.WHITE)
+        searchEditText?.setHintTextColor(Color.LTGRAY)
 
         playlistRecycler.layoutManager = LinearLayoutManager(this)
         accessToken = intent.getStringExtra("ACCESS_TOKEN") ?: run {
@@ -70,6 +77,13 @@ class SearchPlaylistActivity : AppCompatActivity() {
                 return true
             }
         })
+    }
+
+    private fun findSearchAutoComplete(searchView: SearchView): EditText? {
+        val linearLayout1 = searchView.getChildAt(0) as? ViewGroup ?: return null
+        val linearLayout2 = linearLayout1.getChildAt(2) as? ViewGroup ?: return null
+        val linearLayout3 = linearLayout2.getChildAt(1) as? ViewGroup ?: return null
+        return linearLayout3.getChildAt(0) as? EditText
     }
 
     private fun fetchPlaylistsFromSearch(query: String) {

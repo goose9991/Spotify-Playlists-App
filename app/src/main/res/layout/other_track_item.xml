@@ -29,6 +29,7 @@
             android:layout_weight="1"
             android:layout_marginStart="12dp"
             android:text="Track - Artist"
+            android:textColor="@color/spotifyWhite"
             android:textSize="16sp" />
 
         <com.google.android.material.button.MaterialButton
@@ -36,7 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height = "wrap_content"
             android:text="Add"
-            android:textSize="20sp"
+            android:textSize="16sp"
             app:cornerRadius="8dp"
             android:fontFamily="@font/bold"
             />
