@@ -72,7 +72,7 @@ class MainActivity : AppCompatActivity() {
             .appendQueryParameter("redirect_uri", redirectUri)
             .appendQueryParameter("code_challenge_method", "S256")
             .appendQueryParameter("code_challenge", codeChallenge)
-            .appendQueryParameter("scope", "playlist-read-private playlist-modify-private")
+            .appendQueryParameter("scope", "playlist-read-private playlist-modify-private playlist-modify-public")
 
             .build()
 
