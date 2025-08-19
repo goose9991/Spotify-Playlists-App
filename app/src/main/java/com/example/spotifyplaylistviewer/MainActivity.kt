@@ -12,6 +12,7 @@ import okhttp3.*
 import org.json.JSONObject
 import java.io.IOException
 import java.security.MessageDigest
+import androidx.core.content.edit
 
 class MainActivity : AppCompatActivity() {
 
@@ -57,9 +58,9 @@ class MainActivity : AppCompatActivity() {
         codeVerifier = generateCodeVerifier()
         Log.d("AUTH", "Saving code_verifier: $codeVerifier")
 
-        getSharedPreferences("auth", MODE_PRIVATE).edit()
-            .putString("code_verifier", codeVerifier)
-            .apply()
+        getSharedPreferences("auth", MODE_PRIVATE).edit {
+            putString("code_verifier", codeVerifier)
+        }
 
         val codeChallenge = generateCodeChallenge(codeVerifier)
 
